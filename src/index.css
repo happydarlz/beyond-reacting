@@ -5,6 +5,7 @@
 /* FINITIX Design System - Beyond Being
    Premium, minimal, dark-mode first
    Typography-focused with subtle motion
+   MNC-level polish and sophistication
 */
 
 @layer base {
@@ -39,7 +40,7 @@
     --input: 228 10% 18%;
     --ring: 217 91% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     /* Custom Finitix tokens */
     --text-primary: 0 0% 93%;
@@ -91,11 +92,11 @@
 
   /* Premium button styles */
   .btn-outline-premium {
-    @apply inline-flex items-center justify-center rounded-lg border border-border bg-transparent px-6 py-3 text-sm font-medium text-foreground transition-all duration-200;
+    @apply inline-flex items-center justify-center rounded-xl border border-border bg-transparent px-6 py-3.5 text-sm font-medium text-foreground transition-all duration-200;
   }
 
   .btn-outline-premium:hover {
-    @apply border-primary text-primary;
+    @apply border-primary/50 text-primary bg-primary/5;
   }
 
   /* Divider line */
@@ -103,14 +104,14 @@
     @apply h-px w-full bg-gradient-to-r from-transparent via-border to-transparent;
   }
 
-  /* Section spacing */
+  /* Section spacing - generous for premium feel */
   .section-spacing {
-    @apply py-24 md:py-32 lg:py-40;
+    @apply py-28 md:py-36 lg:py-44;
   }
 
   /* Container */
   .container-narrow {
-    @apply mx-auto max-w-5xl px-6 md:px-8;
+    @apply mx-auto max-w-6xl px-6 md:px-8 lg:px-12;
   }
 
   /* Glow effect for accent */
@@ -120,6 +121,16 @@
 
   .accent-glow::before {
     @apply absolute -inset-1 rounded-lg bg-primary opacity-20 blur-xl content-[''];
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-card/30 backdrop-blur-xl border border-border/50;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent;
   }
 }
 
