@@ -23,6 +23,11 @@ const ClosingStatement = () => {
             <span className="text-primary">beyond being reactive</span>, beyond 
             being fragile, beyond being temporary.
           </p>
+          <p className="mt-8 text-lg text-muted-foreground">
+            This is the Finitix commitment: technology that earns trust through 
+            consistent, silent performance. Products that become essential by 
+            being reliable, not by demanding attention.
+          </p>
         </motion.blockquote>
       </div>
     </AnimatedSection>
