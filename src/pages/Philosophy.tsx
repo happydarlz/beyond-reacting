@@ -3,6 +3,7 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import AnimatedSection from "../components/ui/AnimatedSection";
 import MotionGraph from "../components/ui/MotionGraph";
+import ParticleField from "../components/ui/ParticleField";
 
 const Philosophy = () => {
   return (
@@ -11,6 +12,7 @@ const Philosophy = () => {
       <main className="pt-32">
         <AnimatedSection className="section-spacing relative overflow-hidden">
           <MotionGraph variant="subtle" className="opacity-30" />
+          <ParticleField variant="sparse" particleCount={10} className="opacity-25" />
           
           <div className="container-narrow relative z-10">
             <motion.span
