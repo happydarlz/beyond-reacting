@@ -40,6 +40,12 @@ const Contact = () => {
                   Whether you're interested in our work, our philosophy, or future 
                   collaboration, we're always open to thoughtful conversations.
                 </p>
+                <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                  We value meaningful dialogue over transactional exchanges. If 
+                  you have questions about Finitix, want to explore potential 
+                  partnerships, or simply share ideas that align with our mission, 
+                  we'd be glad to hear from you.
+                </p>
               </motion.div>
 
               <motion.div
@@ -59,6 +65,9 @@ const Contact = () => {
                     >
                       hello@finitix.com
                     </a>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      For general inquiries and conversations
+                    </p>
                   </div>
 
                   <div>
@@ -68,7 +77,34 @@ const Contact = () => {
                     <p className="mt-3 text-xl text-foreground">
                       Remote-first
                     </p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      We work across time zones with a global perspective
+                    </p>
                   </div>
+                </div>
+              </motion.div>
+
+              <div className="divider-subtle my-20" />
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <span className="text-sm uppercase tracking-widest text-muted-foreground">
+                  What to expect
+                </span>
+                <div className="mt-8 space-y-6">
+                  <p className="text-lg text-muted-foreground">
+                    We read every message personally and respond thoughtfully. 
+                    While we can't promise immediate replies, we do promise genuine 
+                    consideration of every inquiry.
+                  </p>
+                  <p className="text-lg text-muted-foreground">
+                    If your message aligns with our work and values, we'll be in 
+                    touch to continue the conversation.
+                  </p>
                 </div>
               </motion.div>
 
@@ -84,6 +120,9 @@ const Contact = () => {
                 <p className="text-2xl leading-relaxed text-foreground">
                   Building the future of{" "}
                   <span className="text-primary">quiet technology</span>.
+                </p>
+                <p className="mt-4 text-muted-foreground">
+                  Finitix — Beyond Being
                 </p>
               </motion.div>
             </div>

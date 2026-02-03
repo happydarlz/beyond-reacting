@@ -9,21 +9,25 @@ const principles = [
     number: "01",
     title: "Clarity over complexity",
     description: "If something is hard to understand, it's not finished.",
+    extended: "We believe that true mastery lies in the ability to make the complex simple. Every interface, every system, every line of code should be immediately comprehensible to those who interact with it."
   },
   {
     number: "02",
     title: "Prevention over repair",
     description: "The best solution is the one that avoids the problem entirely.",
+    extended: "Reactive systems are inherently inefficient. By focusing on prevention, we eliminate entire categories of issues before they can impact operations or require human intervention."
   },
   {
     number: "03",
     title: "Quiet reliability",
     description: "Technology should work without constant attention.",
+    extended: "The mark of exceptional technology is its invisibility. When systems operate flawlessly in the background, people are free to focus on what truly matters."
   },
   {
     number: "04",
     title: "Long-term value",
     description: "We build products meant to last, not chase trends.",
+    extended: "Short-term thinking leads to technical debt and fragile systems. We invest in foundations that remain solid for years, providing compounding value over time."
   },
 ];
 
@@ -53,6 +57,17 @@ const Principles = () => {
                 Our principles
               </motion.h1>
 
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground"
+              >
+                These principles form the foundation of how Finitix operates. They 
+                guide our decisions, shape our culture, and define the standards 
+                we hold ourselves to every day.
+              </motion.p>
+
               <div className="mt-20 space-y-0">
                 {principles.map((principle, index) => (
                   <motion.div
@@ -74,11 +89,30 @@ const Principles = () => {
                         <p className="mt-4 max-w-xl text-lg text-muted-foreground">
                           {principle.description}
                         </p>
+                        <p className="mt-4 max-w-xl text-base text-muted-foreground/80">
+                          {principle.extended}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
                 ))}
               </div>
+
+              <div className="divider-subtle my-20" />
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="max-w-2xl"
+              >
+                <p className="text-2xl leading-relaxed text-foreground md:text-3xl">
+                  Principles are only meaningful when they're practiced. At{" "}
+                  <span className="text-primary">Finitix</span>, we hold ourselves 
+                  accountable to these standards in every decision we make.
+                </p>
+              </motion.div>
             </div>
           </AnimatedSection>
         </main>
