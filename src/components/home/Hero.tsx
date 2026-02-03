@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
 import MotionGraph from "../ui/MotionGraph";
+import ParticleField from "../ui/ParticleField";
+import FlowingLines from "../ui/FlowingLines";
 
 const Hero = () => {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      <MotionGraph variant="hero" className="opacity-40" />
+      <MotionGraph variant="hero" className="opacity-50" />
+      <ParticleField variant="sparse" particleCount={15} className="opacity-40" />
+      <FlowingLines variant="wave" className="opacity-20" />
       
       <div className="container-narrow relative z-10 pt-20">
         <div className="max-w-3xl">
