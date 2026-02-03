@@ -38,55 +38,14 @@ const Careers = () => {
                 className="mt-12 max-w-2xl"
               >
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Finitix is a small, focused team that values ownership, quality, 
-                  and thoughtful execution. We care deeply about what we build and 
-                  how it's used.
+                  We are a small, focused team that values ownership, quality, and 
+                  thoughtful execution. We care deeply about what we build and how 
+                  it's used.
                 </p>
                 <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
                   If you believe software should be simple, reliable, and meaningful, 
-                  you'll feel at home here. We're looking for individuals who take 
-                  pride in their craft and understand that the best work often goes 
-                  unnoticed — because it simply works.
+                  you'll feel at home here.
                 </p>
-                <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                  We operate with autonomy and trust. Every team member has a direct 
-                  impact on the products we ship and the direction we take. There 
-                  are no unnecessary meetings, no bureaucratic processes — just 
-                  focused work on meaningful problems.
-                </p>
-              </motion.div>
-
-              <div className="divider-subtle my-20" />
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <span className="text-sm uppercase tracking-widest text-muted-foreground">
-                  What we value
-                </span>
-                <div className="mt-8 grid gap-8 md:grid-cols-2">
-                  {[
-                    { title: "Ownership", desc: "You take full responsibility for your work, from conception to deployment and beyond." },
-                    { title: "Quality", desc: "You hold yourself to high standards and aren't satisfied with 'good enough.'" },
-                    { title: "Clarity", desc: "You communicate clearly and value simplicity in both code and conversation." },
-                    { title: "Purpose", desc: "You want your work to matter and contribute to something meaningful." },
-                  ].map((item, index) => (
-                    <motion.div
-                      key={item.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="border-l border-border/50 pl-6"
-                    >
-                      <h3 className="text-lg font-medium text-foreground">{item.title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
-                    </motion.div>
-                  ))}
-                </div>
               </motion.div>
 
               <div className="divider-subtle my-20" />
@@ -101,10 +60,8 @@ const Careers = () => {
                   Open positions
                 </h2>
                 <p className="mt-4 text-muted-foreground">
-                  We're always looking for exceptional people. If you share our 
-                  values and believe in building technology that quietly makes a 
-                  difference, we'd love to hear from you — even if we don't have 
-                  an open role that matches your profile.
+                  We're always looking for exceptional people. If you share our values, 
+                  we'd love to hear from you.
                 </p>
                 <Link
                   to="/contact"

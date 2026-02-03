@@ -16,18 +16,12 @@ const WhatWeBelieve = () => {
             </h2>
           </div>
 
-          <div className="space-y-6">
+          <div>
             <p className="text-lg leading-relaxed text-muted-foreground">
               Technology should not demand constant attention. It should be dependable, 
               clear, and quietly effective. We believe the best products are the ones 
               you don't have to think about — they simply work, reduce risk, and make 
               everyday systems stronger.
-            </p>
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              At Finitix, we hold ourselves to this standard in everything we build. 
-              Our products are designed to fade into the background while doing 
-              critical work — preventing issues, automating responses, and ensuring 
-              reliability without requiring constant human oversight.
             </p>
           </div>
         </div>

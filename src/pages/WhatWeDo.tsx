@@ -37,22 +37,14 @@ const WhatWeDo = () => {
                 className="mt-12 max-w-2xl"
               >
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Finitix designs and builds focused software products that help 
-                  systems stay safe, stable, and dependable. Our work centers on 
-                  prevention, automation, and clarity — turning fragile setups 
-                  into strong foundations.
+                  We design and build focused software products that help systems 
+                  stay safe, stable, and dependable. Our work centers on prevention, 
+                  automation, and clarity — turning fragile setups into strong 
+                  foundations.
                 </p>
                 <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
                   Every product we create is built to be essential, easy to use, 
-                  and valuable over the long term. We don't chase trends or build 
-                  features for the sake of novelty — we solve real problems with 
-                  lasting solutions.
-                </p>
-                <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                  Our approach is methodical and intentional. We identify critical 
-                  pain points, design elegant solutions, and execute with precision. 
-                  The result is technology that works quietly and effectively, 
-                  earning trust through consistent performance.
+                  and valuable over the long term.
                 </p>
               </motion.div>
 
@@ -63,63 +55,27 @@ const WhatWeDo = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
+                className="grid gap-8 md:grid-cols-3"
               >
-                <span className="text-sm uppercase tracking-widest text-muted-foreground">
-                  Core focus areas
-                </span>
-                <div className="mt-8 grid gap-8 md:grid-cols-3">
-                  {[
-                    { label: "Prevention", value: "First", desc: "Stop problems before they start through intelligent anticipation." },
-                    { label: "Automation", value: "Always", desc: "Remove manual intervention wherever possible for reliability." },
-                    { label: "Clarity", value: "Core", desc: "Make complexity invisible through thoughtful design." },
-                  ].map((item, index) => (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="border-l border-border/50 pl-6"
-                    >
-                      <span className="text-3xl font-medium text-primary">{item.value}</span>
-                      <p className="mt-2 text-sm uppercase tracking-widest text-muted-foreground">
-                        {item.label}
-                      </p>
-                      <p className="mt-4 text-sm text-muted-foreground">
-                        {item.desc}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              <div className="divider-subtle my-20" />
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <span className="text-sm uppercase tracking-widest text-muted-foreground">
-                  How we work
-                </span>
-                <div className="mt-8 space-y-8">
-                  {[
-                    { step: "01", title: "Identify", desc: "We start by deeply understanding the problem space, uncovering root causes rather than surface symptoms." },
-                    { step: "02", title: "Design", desc: "We craft solutions that are minimal yet complete, eliminating unnecessary complexity at every turn." },
-                    { step: "03", title: "Build", desc: "We engineer with precision, creating systems that are robust, maintainable, and built to last." },
-                    { step: "04", title: "Refine", desc: "We continuously improve based on real-world performance, always seeking greater reliability and simplicity." },
-                  ].map((item) => (
-                    <div key={item.step} className="flex gap-6">
-                      <span className="text-sm font-medium text-primary">{item.step}</span>
-                      <div>
-                        <h3 className="text-lg font-medium text-foreground">{item.title}</h3>
-                        <p className="mt-2 max-w-xl text-muted-foreground">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                {[
+                  { label: "Prevention", value: "First" },
+                  { label: "Automation", value: "Always" },
+                  { label: "Clarity", value: "Core" },
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="border-l border-border/50 pl-6"
+                  >
+                    <span className="text-3xl font-medium text-primary">{item.value}</span>
+                    <p className="mt-2 text-sm uppercase tracking-widest text-muted-foreground">
+                      {item.label}
+                    </p>
+                  </motion.div>
+                ))}
               </motion.div>
             </div>
           </AnimatedSection>
