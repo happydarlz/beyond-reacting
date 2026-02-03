@@ -33,7 +33,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="mt-6 text-base text-muted-foreground/70"
           >
-            Simple by design. Reliable by default. Built to last.
+            Designed with intention. Built for reliability. Made to endure.
           </motion.p>
         </div>
       </div>
