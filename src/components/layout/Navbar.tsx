@@ -23,12 +23,12 @@ const Navbar = () => {
       <nav className="container-narrow flex h-20 items-center justify-between">
         <Link 
           to="/" 
-          className="flex items-center gap-3 text-lg font-medium tracking-tight text-foreground transition-opacity hover:opacity-70"
+          className="flex items-center gap-3 text-xl font-medium tracking-tight text-foreground transition-opacity hover:opacity-70"
         >
           <img 
             src={logo} 
             alt="Finitix Logo" 
-            className="h-8 w-auto"
+            className="h-12 w-auto"
           />
           <span>Finitix</span>
         </Link>
