@@ -11,7 +11,7 @@ const Footer = () => {
               <img 
                 src={logo} 
                 alt="Finitix Logo" 
-                className="h-7 w-auto"
+                className="h-10 w-auto"
               />
               <div>
                 <span className="text-lg font-medium text-foreground">
