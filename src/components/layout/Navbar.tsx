@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { href: "/about", label: "About" },
@@ -22,9 +23,14 @@ const Navbar = () => {
       <nav className="container-narrow flex h-20 items-center justify-between">
         <Link 
           to="/" 
-          className="text-lg font-medium tracking-tight text-foreground transition-opacity hover:opacity-70"
+          className="flex items-center gap-3 text-lg font-medium tracking-tight text-foreground transition-opacity hover:opacity-70"
         >
-          Finitix
+          <img 
+            src={logo} 
+            alt="Finitix Logo" 
+            className="h-8 w-auto"
+          />
+          <span>Finitix</span>
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">
