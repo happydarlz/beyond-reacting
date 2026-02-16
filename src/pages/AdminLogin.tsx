@@ -1,29 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 
-const ADMIN_EMAIL = "admin@finitix.com";
+const DEFAULT_PASSWORD = "Sujatha@1234";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: ADMIN_EMAIL,
-      password,
-    });
-    setLoading(false);
-    if (error) {
-      toast({ title: "Login failed", description: "Invalid password", variant: "destructive" });
-    } else {
+    setError("");
+
+    const storedPassword = localStorage.getItem("admin_password") || DEFAULT_PASSWORD;
+
+    if (password === storedPassword) {
+      localStorage.setItem("admin_authenticated", "true");
       navigate("/admin");
+    } else {
+      setError("Invalid password");
     }
+    setLoading(false);
   };
 
   return (
@@ -33,7 +32,7 @@ const AdminLogin = () => {
           Admin Panel
         </h1>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Sign in to manage submissions
+          Enter password to access admin dashboard
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -42,12 +41,12 @@ const AdminLogin = () => {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); setError(""); }}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               placeholder="••••••••"
               required
-              minLength={6}
             />
+            {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
           </div>
           <button
             type="submit"

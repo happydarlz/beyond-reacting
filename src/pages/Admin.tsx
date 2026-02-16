@@ -13,30 +13,19 @@ const Admin = () => {
   const [careers, setCareers] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
 
   // Settings state
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/admin-login");
-        return;
-      }
-      setUser(session.user);
-      fetchData();
-    };
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) navigate("/admin-login");
-      else setUser(session.user);
-    });
-
-    checkAuth();
-    return () => subscription.unsubscribe();
+    const isAuth = localStorage.getItem("admin_authenticated");
+    if (isAuth !== "true") {
+      navigate("/admin-login");
+      return;
+    }
+    fetchData();
   }, [navigate]);
 
   const fetchData = async () => {
@@ -52,26 +41,29 @@ const Admin = () => {
     setLoading(false);
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    localStorage.removeItem("admin_authenticated");
     navigate("/admin-login");
   };
 
-  const handleChangePassword = async (e: React.FormEvent) => {
+  const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
+    const storedPassword = localStorage.getItem("admin_password") || "Sujatha@1234";
+    
+    if (currentPassword !== storedPassword) {
+      toast({ title: "Current password is incorrect", variant: "destructive" });
+      return;
+    }
     if (newPassword.length < 6) {
-      toast({ title: "Password must be at least 6 characters", variant: "destructive" });
+      toast({ title: "New password must be at least 6 characters", variant: "destructive" });
       return;
     }
     setChangingPassword(true);
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    localStorage.setItem("admin_password", newPassword);
     setChangingPassword(false);
-    if (error) {
-      toast({ title: "Failed to change password", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Password updated successfully!" });
-      setNewPassword("");
-    }
+    toast({ title: "Password updated successfully!" });
+    setCurrentPassword("");
+    setNewPassword("");
   };
 
   const formatDate = (d: string) => new Date(d).toLocaleDateString("en-IN", {
@@ -85,20 +77,15 @@ const Admin = () => {
     { key: "settings", label: "Settings", count: 0 },
   ];
 
-  if (!user) return null;
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border">
         <div className="container-narrow flex h-16 items-center justify-between">
           <h1 className="text-lg font-medium text-foreground">Finitix Admin</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{user.email}</span>
-            <button onClick={handleLogout} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Logout
-            </button>
-          </div>
+          <button onClick={handleLogout} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Logout
+          </button>
         </div>
       </header>
 
@@ -209,6 +196,17 @@ const Admin = () => {
               <div className="max-w-sm">
                 <h2 className="text-xl font-medium text-foreground">Change Password</h2>
                 <form onSubmit={handleChangePassword} className="mt-6 space-y-4">
+                  <div>
+                    <label className="mb-1.5 block text-sm text-muted-foreground">Current Password</label>
+                    <input
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      placeholder="Enter current password"
+                      required
+                    />
+                  </div>
                   <div>
                     <label className="mb-1.5 block text-sm text-muted-foreground">New Password</label>
                     <input
