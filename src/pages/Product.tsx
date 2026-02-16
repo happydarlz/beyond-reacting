@@ -7,13 +7,11 @@ import PageTransition from "../components/ui/PageTransition";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const Careers = () => {
+const Product = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: "", email: "", phone: "", position: "", experience: "", cover_letter: "",
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,20 +20,19 @@ const Careers = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("career_applications").insert({
+    const { error } = await supabase.from("product_interests").insert({
       name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim() || null,
-      position: form.position.trim() || null,
-      experience: form.experience.trim() || null,
-      cover_letter: form.cover_letter.trim() || null,
+      company: form.company.trim() || null,
+      message: form.message.trim() || null,
     });
     setLoading(false);
     if (error) {
       toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
     } else {
       setSubmitted(true);
-      toast({ title: "Application submitted!", description: "We'll review it and get back to you." });
+      toast({ title: "Thank you!", description: "We'll be in touch soon." });
     }
   };
 
@@ -52,7 +49,7 @@ const Careers = () => {
                 transition={{ duration: 0.6 }}
                 className="text-sm uppercase tracking-widest text-muted-foreground"
               >
-                Join us
+                Product
               </motion.span>
 
               <motion.h1
@@ -61,24 +58,53 @@ const Careers = () => {
                 transition={{ duration: 0.8, delay: 0.1 }}
                 className="mt-4 text-4xl font-medium tracking-tight md:text-5xl"
               >
-                Work with us
+                AI Model One-Click Deployment & Observability Platform
               </motion.h1>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="mt-12 max-w-2xl"
+                className="mt-8"
+              >
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                  Coming Soon
+                </span>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="mt-12 max-w-3xl"
               >
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  We are a small, focused team that values ownership, quality, and
-                  thoughtful execution. We care deeply about what we build and how
-                  it's used.
+                  Deploy your trained AI models to production with a single click. Our platform 
+                  abstracts away cloud complexity—automatically provisioning infrastructure, networking, 
+                  security, logging, and monitoring—so you can focus on model innovation.
                 </p>
-                <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                  If you believe software should be simple, reliable, and meaningful,
-                  you'll feel at home here.
-                </p>
+
+                <div className="mt-12 grid gap-8 md:grid-cols-2">
+                  {[
+                    { title: "One-Click Deploy", desc: "Upload your model, select minimal config, and deploy instantly." },
+                    { title: "BYOC Support", desc: "Bring Your Own Cloud—deploy directly into your AWS, GCP, or Azure account." },
+                    { title: "Real-Time Observability", desc: "Live log visualization, performance metrics, and alerting built in." },
+                    { title: "Auto-Scaling & Healing", desc: "Automatic scaling based on traffic with self-healing capabilities." },
+                  ].map((feature, i) => (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: i * 0.1 }}
+                      className="rounded-xl border border-border bg-card p-6"
+                    >
+                      <h3 className="text-lg font-medium text-foreground">{feature.title}</h3>
+                      <p className="mt-2 text-sm text-muted-foreground">{feature.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
               </motion.div>
 
               <div className="divider-subtle my-20" />
@@ -90,27 +116,28 @@ const Careers = () => {
                 transition={{ duration: 0.8 }}
                 className="max-w-lg"
               >
-                <h2 className="text-2xl font-medium text-foreground">Apply now</h2>
+                <h2 className="text-2xl font-medium text-foreground">
+                  Interested in this product?
+                </h2>
                 <p className="mt-3 text-muted-foreground">
-                  We're always looking for exceptional people. Fill out the form below
-                  and we'll be in touch.
+                  Join the waitlist and be the first to know when we launch.
                 </p>
 
                 {submitted ? (
                   <div className="mt-8 rounded-xl border border-primary/30 bg-primary/5 p-8 text-center">
-                    <p className="text-lg font-medium text-foreground">Application received!</p>
-                    <p className="mt-2 text-muted-foreground">We'll review your application and get back to you soon.</p>
+                    <p className="text-lg font-medium text-foreground">Thank you for your interest!</p>
+                    <p className="mt-2 text-muted-foreground">We'll reach out as soon as the platform is ready.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                     <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Full Name *</label>
+                      <label className="mb-1.5 block text-sm text-muted-foreground">Name *</label>
                       <input
                         type="text"
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Your full name"
+                        placeholder="Your name"
                         required
                         maxLength={100}
                       />
@@ -139,35 +166,24 @@ const Careers = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Position interested in</label>
+                      <label className="mb-1.5 block text-sm text-muted-foreground">Company</label>
                       <input
                         type="text"
-                        value={form.position}
-                        onChange={(e) => setForm({ ...form, position: e.target.value })}
+                        value={form.company}
+                        onChange={(e) => setForm({ ...form, company: e.target.value })}
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="e.g. Full Stack Developer"
+                        placeholder="Your company"
                         maxLength={100}
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Experience</label>
-                      <input
-                        type="text"
-                        value={form.experience}
-                        onChange={(e) => setForm({ ...form, experience: e.target.value })}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="e.g. 3 years in web development"
-                        maxLength={200}
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Cover Letter / Why Finitix?</label>
+                      <label className="mb-1.5 block text-sm text-muted-foreground">Message</label>
                       <textarea
-                        value={form.cover_letter}
-                        onChange={(e) => setForm({ ...form, cover_letter: e.target.value })}
-                        className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Tell us about yourself and why you'd like to join Finitix..."
-                        maxLength={2000}
+                        value={form.message}
+                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                        className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        placeholder="Tell us about your use case..."
+                        maxLength={1000}
                       />
                     </div>
                     <button
@@ -175,7 +191,7 @@ const Careers = () => {
                       disabled={loading}
                       className="btn-outline-premium w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-50"
                     >
-                      {loading ? "Submitting..." : "Submit Application"}
+                      {loading ? "Submitting..." : "I'm Interested — Join Waitlist"}
                     </button>
                   </form>
                 )}
@@ -189,4 +205,4 @@ const Careers = () => {
   );
 };
 
-export default Careers;
+export default Product;
