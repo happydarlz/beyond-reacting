@@ -6,12 +6,20 @@ import AnimatedSection from "../components/ui/AnimatedSection";
 import PageTransition from "../components/ui/PageTransition";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const Product = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,9 +40,13 @@ const Product = () => {
       toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
     } else {
       setSubmitted(true);
+      setOpen(false);
       toast({ title: "Thank you!", description: "We'll be in touch soon." });
     }
   };
+
+  const inputClass =
+    "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
   return (
     <PageTransition>
@@ -49,7 +61,7 @@ const Product = () => {
                 transition={{ duration: 0.6 }}
                 className="text-sm uppercase tracking-widest text-muted-foreground"
               >
-                Product
+                Products
               </motion.span>
 
               <motion.h1
@@ -58,148 +70,115 @@ const Product = () => {
                 transition={{ duration: 0.8, delay: 0.1 }}
                 className="mt-4 text-4xl font-medium tracking-tight md:text-5xl"
               >
-                AI Model One-Click Deployment & Observability Platform
+                What we're building
               </motion.h1>
 
-              <motion.div
+              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="mt-8"
+                className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"
               >
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                  Coming Soon
-                </span>
-              </motion.div>
+                Thoughtful tools for modern engineering teams. More products coming soon.
+              </motion.p>
 
+              {/* Single Product Card */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="mt-12 max-w-3xl"
+                className="mt-16 max-w-2xl"
               >
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Deploy your trained AI models to production with a single click. Our platform 
-                  abstracts away cloud complexity—automatically provisioning infrastructure, networking, 
-                  security, logging, and monitoring—so you can focus on model innovation.
-                </p>
-
-                <div className="mt-12 grid gap-8 md:grid-cols-2">
-                  {[
-                    { title: "One-Click Deploy", desc: "Upload your model, select minimal config, and deploy instantly." },
-                    { title: "BYOC Support", desc: "Bring Your Own Cloud—deploy directly into your AWS, GCP, or Azure account." },
-                    { title: "Real-Time Observability", desc: "Live log visualization, performance metrics, and alerting built in." },
-                    { title: "Auto-Scaling & Healing", desc: "Automatic scaling based on traffic with self-healing capabilities." },
-                  ].map((feature, i) => (
-                    <motion.div
-                      key={feature.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: i * 0.1 }}
-                      className="rounded-xl border border-border bg-card p-6"
-                    >
-                      <h3 className="text-lg font-medium text-foreground">{feature.title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground">{feature.desc}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              <div className="divider-subtle my-20" />
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="max-w-lg"
-              >
-                <h2 className="text-2xl font-medium text-foreground">
-                  Interested in this product?
-                </h2>
-                <p className="mt-3 text-muted-foreground">
-                  Join the waitlist and be the first to know when we launch.
-                </p>
-
-                {submitted ? (
-                  <div className="mt-8 rounded-xl border border-primary/30 bg-primary/5 p-8 text-center">
-                    <p className="text-lg font-medium text-foreground">Thank you for your interest!</p>
-                    <p className="mt-2 text-muted-foreground">We'll reach out as soon as the platform is ready.</p>
+                <div className="rounded-2xl border border-border bg-card p-8 md:p-10">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                      Coming Soon
+                    </span>
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-                    <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Name *</label>
-                      <input
-                        type="text"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Your name"
-                        required
-                        maxLength={100}
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Email *</label>
-                      <input
-                        type="email"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="you@example.com"
-                        required
-                        maxLength={255}
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Phone</label>
-                      <input
-                        type="tel"
-                        value={form.phone}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Your phone number"
-                        maxLength={20}
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Company</label>
-                      <input
-                        type="text"
-                        value={form.company}
-                        onChange={(e) => setForm({ ...form, company: e.target.value })}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Your company"
-                        maxLength={100}
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-sm text-muted-foreground">Message</label>
-                      <textarea
-                        value={form.message}
-                        onChange={(e) => setForm({ ...form, message: e.target.value })}
-                        className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Tell us about your use case..."
-                        maxLength={1000}
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="btn-outline-premium w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-50"
-                    >
-                      {loading ? "Submitting..." : "I'm Interested — Join Waitlist"}
-                    </button>
-                  </form>
-                )}
+
+                  <h2 className="mt-5 text-2xl font-medium tracking-tight text-foreground md:text-3xl">
+                    AI Model One-Click Deployment & Observability Platform
+                  </h2>
+
+                  <p className="mt-4 text-muted-foreground leading-relaxed">
+                    Deploy your trained AI models to production with a single click. Our platform
+                    abstracts away cloud complexity—automatically provisioning infrastructure, networking,
+                    security, logging, and monitoring—so you can focus on model innovation.
+                  </p>
+
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    {[
+                      { title: "One-Click Deploy", desc: "Upload your model, select minimal config, and deploy instantly." },
+                      { title: "BYOC Support", desc: "Deploy directly into your AWS, GCP, or Azure account." },
+                      { title: "Real-Time Observability", desc: "Live logs, performance metrics, and alerting built in." },
+                      { title: "Auto-Scaling & Healing", desc: "Automatic scaling with self-healing capabilities." },
+                    ].map((feature) => (
+                      <div key={feature.title} className="rounded-lg border border-border/50 bg-background/50 p-4">
+                        <h3 className="text-sm font-medium text-foreground">{feature.title}</h3>
+                        <p className="mt-1 text-xs text-muted-foreground">{feature.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8">
+                    {submitted ? (
+                      <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 text-center">
+                        <p className="text-sm font-medium text-foreground">🎉 You're on the list!</p>
+                        <p className="mt-1 text-xs text-muted-foreground">We'll reach out when it's ready.</p>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setOpen(true)}
+                        className="btn-outline-premium border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                      >
+                        Interested in this product? →
+                      </button>
+                    )}
+                  </div>
+                </div>
               </motion.div>
             </div>
           </AnimatedSection>
         </main>
         <Footer />
+
+        {/* Product Interest Dialog */}
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Join the Waitlist</DialogTitle>
+              <DialogDescription>
+                Be the first to know when our AI deployment platform launches.
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+              <div>
+                <label className="mb-1 block text-sm text-muted-foreground">Name *</label>
+                <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} placeholder="Your name" required maxLength={100} />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm text-muted-foreground">Email *</label>
+                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} placeholder="you@example.com" required maxLength={255} />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm text-muted-foreground">Phone</label>
+                <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} placeholder="Your phone number" maxLength={20} />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm text-muted-foreground">Company</label>
+                <input type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputClass} placeholder="Your company" maxLength={100} />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm text-muted-foreground">Message</label>
+                <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Tell us about your use case..." maxLength={1000} />
+              </div>
+              <button type="submit" disabled={loading} className="btn-outline-premium w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-50">
+                {loading ? "Submitting..." : "I'm Interested — Join Waitlist"}
+              </button>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </PageTransition>
   );

@@ -165,6 +165,16 @@ const Admin = () => {
                     {c.cover_letter && (
                       <p className="mt-3 text-sm text-foreground/80 whitespace-pre-wrap">{c.cover_letter}</p>
                     )}
+                    {c.resume_url && (
+                      <a
+                        href={supabase.storage.from("resumes").getPublicUrl(c.resume_url).data.publicUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-block text-sm text-primary hover:underline"
+                      >
+                        📄 View Resume
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
