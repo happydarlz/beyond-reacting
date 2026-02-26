@@ -36,7 +36,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const { data } = await supabase
-        .from("products")
+        .from("products" as any)
         .select("*")
         .order("sort_order", { ascending: true });
       if (data) setProducts(data as unknown as Product[]);

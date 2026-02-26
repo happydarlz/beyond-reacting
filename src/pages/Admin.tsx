@@ -53,7 +53,7 @@ const Admin = () => {
       supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }),
       supabase.from("career_applications").select("*").order("created_at", { ascending: false }),
       supabase.from("product_interests").select("*").order("created_at", { ascending: false }),
-      supabase.from("products").select("*").order("sort_order", { ascending: true }),
+      supabase.from("products" as any).select("*").order("sort_order", { ascending: true }),
     ]);
     setContacts(c.data || []);
     setCareers(ca.data || []);
@@ -122,9 +122,9 @@ const Admin = () => {
     };
 
     if (editingProduct) {
-      await supabase.from("products").update(payload).eq("id", editingProduct.id);
+      await (supabase.from("products" as any) as any).update(payload).eq("id", editingProduct.id);
     } else {
-      await supabase.from("products").insert(payload);
+      await supabase.from("products" as any).insert(payload as any);
     }
     setSaving(false);
     setProductDialog(false);
@@ -134,7 +134,7 @@ const Admin = () => {
 
   const handleDeleteProduct = async (id: string) => {
     if (!confirm("Delete this product?")) return;
-    await supabase.from("products").delete().eq("id", id);
+    await (supabase.from("products" as any) as any).delete().eq("id", id);
     toast({ title: "Product deleted" });
     fetchData();
   };
