@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import AnimatedSection from "../components/ui/AnimatedSection";
@@ -14,36 +14,28 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-type Product = {
-  id: string;
-  title: string;
-  description: string;
-  features: { title: string; desc: string }[];
-  status: string;
-  sort_order: number;
-};
+const features = [
+  { title: "One-Click Deploy", desc: "Upload your project or import from GitHub and deploy instantly — no DevOps required." },
+  { title: "Auto Stack Detection", desc: "Automatically detects your tech stack and chooses the optimal deployment strategy." },
+  { title: "Multi-Cloud Support", desc: "Deploy to AWS, GCP, or Azure using secure OAuth — one platform, any cloud." },
+  { title: "Real-Time Observability", desc: "Built-in monitoring, live logs, performance metrics, and intelligent alerting." },
+  { title: "Auto-Scaling & Self-Healing", desc: "Infrastructure that scales on demand and recovers automatically from failures." },
+  { title: "AI Model Deployment", desc: "Deploy trained AI/ML models to production with zero infrastructure knowledge." },
+];
+
+const targetUsers = [
+  { label: "Students & Beginners", icon: "📚" },
+  { label: "Indie Developers", icon: "⚡" },
+  { label: "AI/ML Builders", icon: "🧠" },
+  { label: "Startups & Small Teams", icon: "🚀" },
+];
 
 const Product = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", message: "" });
-  const [submitted, setSubmitted] = useState<Record<string, boolean>>({});
+  const [submitted, setSubmitted] = useState(false);
   const [open, setOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [fetching, setFetching] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await supabase
-        .from("products" as any)
-        .select("*")
-        .order("sort_order", { ascending: true });
-      if (data) setProducts(data as unknown as Product[]);
-      setFetching(false);
-    };
-    fetchProducts();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,137 +49,267 @@ const Product = () => {
       email: form.email.trim(),
       phone: form.phone.trim() || null,
       company: form.company.trim() || null,
-      message: form.message.trim() ? `[${selectedProduct}] ${form.message.trim()}` : `[${selectedProduct}]`,
+      message: form.message.trim() || null,
     });
     setLoading(false);
     if (error) {
       toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
     } else {
-      setSubmitted((prev) => ({ ...prev, [selectedProduct!]: true }));
+      setSubmitted(true);
       setOpen(false);
-      setForm({ name: "", email: "", phone: "", company: "", message: "" });
       toast({ title: "Thank you!", description: "We'll be in touch soon." });
     }
-  };
-
-  const openWaitlist = (productTitle: string) => {
-    setSelectedProduct(productTitle);
-    setOpen(true);
   };
 
   const inputClass =
     "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
-  const statusBadge = (status: string) => {
-    const map: Record<string, { label: string; color: string }> = {
-      coming_soon: { label: "Coming Soon", color: "border-primary/30 bg-primary/10 text-primary" },
-      beta: { label: "Beta", color: "border-yellow-500/30 bg-yellow-500/10 text-yellow-400" },
-      live: { label: "Live", color: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400" },
-      in_development: { label: "In Development", color: "border-violet-500/30 bg-violet-500/10 text-violet-400" },
-    };
-    const s = map[status] || map.coming_soon;
-    return (
-      <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${s.color}`}>
-        <span className="h-1.5 w-1.5 rounded-full bg-current animate-pulse" />
-        {s.label}
-      </span>
-    );
-  };
-
   return (
     <PageTransition>
       <div className="min-h-screen">
         <Navbar />
-        <main className="pt-32">
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow">
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6 }}
-                className="text-sm uppercase tracking-widest text-muted-foreground"
-              >
-                Products
-              </motion.span>
+        <main>
+          {/* Hero */}
+          <section className="relative flex min-h-screen items-center overflow-hidden">
+            {/* Ambient glow */}
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/[0.07] blur-[120px]" />
+              <div className="absolute right-0 bottom-0 h-[400px] w-[400px] rounded-full bg-primary/[0.04] blur-[100px]" />
+            </div>
 
-              <motion.h1
+            <div className="container-narrow relative z-10 pt-32 pb-20">
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="mt-4 text-4xl font-medium tracking-tight md:text-5xl"
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3"
               >
-                What we're building
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  Coming Soon
+                </span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.15 }}
+                className="mt-8 text-5xl font-medium tracking-tight leading-[1.1] md:text-6xl lg:text-7xl"
+              >
+                Cloudsnap Studio
               </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
+              >
+                An AI-powered cloud deployment platform that eliminates infrastructure complexity.
+                Upload your project, connect your cloud, and deploy — with one click.
+              </motion.p>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"
+                transition={{ duration: 0.8, delay: 0.45 }}
+                className="mt-4 text-base text-muted-foreground/60"
               >
-                Thoughtful tools for modern engineering teams. Explore our products below.
+                No DevOps expertise required. Production-grade from day one.
               </motion.p>
 
-              {fetching ? (
-                <div className="mt-16 grid gap-8 md:grid-cols-2">
-                  {[1, 2].map((i) => (
-                    <div key={i} className="rounded-2xl border border-border bg-card p-8 animate-pulse">
-                      <div className="h-6 w-24 rounded bg-muted" />
-                      <div className="mt-5 h-8 w-3/4 rounded bg-muted" />
-                      <div className="mt-4 h-20 rounded bg-muted" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="mt-16 grid gap-8 md:grid-cols-2">
-                  {products.map((product, i) => (
-                    <motion.div
-                      key={product.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, delay: 0.3 + i * 0.1 }}
-                    >
-                      <div className="group flex h-full flex-col rounded-2xl border border-border bg-card p-8 transition-colors hover:border-primary/20">
-                        {statusBadge(product.status)}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="mt-10"
+              >
+                {submitted ? (
+                  <div className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-6 py-3">
+                    <span className="text-sm font-medium text-foreground">🎉 You're on the list!</span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setOpen(true)}
+                    className="btn-outline-premium border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                  >
+                    Join the Waitlist →
+                  </button>
+                )}
+              </motion.div>
+            </div>
 
-                        <h2 className="mt-5 text-2xl font-medium tracking-tight text-foreground">
-                          {product.title}
-                        </h2>
+            {/* Scroll indicator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5, duration: 1 }}
+              className="absolute bottom-12 left-1/2 -translate-x-1/2"
+            >
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="h-8 w-px bg-gradient-to-b from-muted-foreground/50 to-transparent"
+              />
+            </motion.div>
+          </section>
 
-                        <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                          {product.description}
-                        </p>
+          {/* Problem */}
+          <AnimatedSection className="section-spacing">
+            <div className="container-narrow">
+              <div className="divider-subtle mb-20" />
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">The Problem</span>
+              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
+                Cloud is powerful — but painful.
+              </h2>
+              <div className="mt-10 grid gap-6 md:grid-cols-2">
+                {[
+                  "Steep learning curve for AWS, Azure, and GCP",
+                  "Manual CI/CD pipeline configuration",
+                  "Confusion in choosing the right cloud",
+                  "Security misconfigurations and blind spots",
+                  "No built-in observability or alerting",
+                  "AI models built but never deployed",
+                ].map((problem, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className="flex items-start gap-3 rounded-lg border border-border/50 bg-card/50 p-4"
+                  >
+                    <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-destructive/70" />
+                    <p className="text-sm text-muted-foreground">{problem}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
 
-                        {product.features && product.features.length > 0 && (
-                          <div className="mt-6 grid gap-2 sm:grid-cols-2">
-                            {product.features.slice(0, 4).map((f) => (
-                              <div key={f.title} className="rounded-lg border border-border/50 bg-background/50 p-3">
-                                <h3 className="text-xs font-medium text-foreground">{f.title}</h3>
-                                <p className="mt-0.5 text-[11px] text-muted-foreground">{f.desc}</p>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+          {/* Features */}
+          <AnimatedSection className="section-spacing">
+            <div className="container-narrow">
+              <div className="divider-subtle mb-20" />
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">Capabilities</span>
+              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
+                Everything you need to ship.
+              </h2>
+              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {features.map((feature, i) => (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className="group rounded-xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/30 hover:bg-card"
+                  >
+                    <h3 className="text-base font-medium text-foreground">{feature.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{feature.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
 
-                        <div className="mt-6">
-                          {submitted[product.title] ? (
-                            <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 text-center">
-                              <p className="text-sm font-medium text-foreground">🎉 You're on the list!</p>
-                            </div>
-                          ) : (
-                            <button
-                              onClick={() => openWaitlist(product.title)}
-                              className="btn-outline-premium w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
-                            >
-                              Join Waitlist →
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
+          {/* How It Works */}
+          <AnimatedSection className="section-spacing">
+            <div className="container-narrow">
+              <div className="divider-subtle mb-20" />
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">How It Works</span>
+              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
+                Three steps. Zero complexity.
+              </h2>
+              <div className="mt-12 grid gap-8 md:grid-cols-3">
+                {[
+                  { step: "01", title: "Upload or Import", desc: "Upload your project files or connect your GitHub repository." },
+                  { step: "02", title: "Connect Your Cloud", desc: "Authenticate with AWS, GCP, or Azure using secure OAuth." },
+                  { step: "03", title: "Deploy", desc: "One click. Auto stack detection, security, monitoring — all handled." },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.step}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 }}
+                    className="relative"
+                  >
+                    <span className="text-5xl font-medium text-primary/15">{item.step}</span>
+                    <h3 className="mt-2 text-lg font-medium text-foreground">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+
+          {/* Target Users */}
+          <AnimatedSection className="section-spacing">
+            <div className="container-narrow">
+              <div className="divider-subtle mb-20" />
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">Built For</span>
+              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
+                From students to startups.
+              </h2>
+              <div className="mt-12 flex flex-wrap gap-4">
+                {targetUsers.map((user, i) => (
+                  <motion.div
+                    key={user.label}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center gap-3 rounded-full border border-border/50 bg-card/50 px-6 py-3"
+                  >
+                    <span className="text-lg">{user.icon}</span>
+                    <span className="text-sm font-medium text-foreground">{user.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+
+          {/* Vision */}
+          <AnimatedSection className="section-spacing">
+            <div className="container-narrow">
+              <div className="divider-subtle mb-20" />
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">Vision</span>
+              <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight md:text-4xl">
+                An autonomous cloud operating system that abstracts complexity entirely.
+              </h2>
+              <p className="mt-6 max-w-2xl text-muted-foreground leading-relaxed">
+                Cloudsnap Studio isn't just a deployment tool. It's the beginning of a future where
+                anyone — regardless of their infrastructure knowledge — can take an idea to production
+                with confidence, security, and reliability built in from the start.
+              </p>
+            </div>
+          </AnimatedSection>
+
+          {/* CTA */}
+          <AnimatedSection className="section-spacing">
+            <div className="container-narrow text-center">
+              <div className="divider-subtle mb-20" />
+              <h2 className="text-3xl font-medium tracking-tight md:text-4xl">
+                Be the first to deploy.
+              </h2>
+              <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
+                Join the waitlist and get early access when Cloudsnap Studio launches.
+              </p>
+              <div className="mt-8">
+                {submitted ? (
+                  <div className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-6 py-3">
+                    <span className="text-sm font-medium text-foreground">🎉 You're on the list!</span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setOpen(true)}
+                    className="btn-outline-premium border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                  >
+                    Join the Waitlist →
+                  </button>
+                )}
+              </div>
             </div>
           </AnimatedSection>
         </main>
@@ -199,7 +321,7 @@ const Product = () => {
             <DialogHeader>
               <DialogTitle>Join the Waitlist</DialogTitle>
               <DialogDescription>
-                Be the first to know when {selectedProduct} launches.
+                Be the first to know when Cloudsnap Studio launches.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-2">
