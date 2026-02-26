@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import AnimatedSection from "../components/ui/AnimatedSection";
 import PageTransition from "../components/ui/PageTransition";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -15,19 +14,18 @@ import {
 } from "@/components/ui/dialog";
 
 const features = [
-  { title: "One-Click Deploy", desc: "Upload your project or import from GitHub and deploy instantly — no DevOps required." },
-  { title: "Auto Stack Detection", desc: "Automatically detects your tech stack and chooses the optimal deployment strategy." },
-  { title: "Multi-Cloud Support", desc: "Deploy to AWS, GCP, or Azure using secure OAuth — one platform, any cloud." },
-  { title: "Real-Time Observability", desc: "Built-in monitoring, live logs, performance metrics, and intelligent alerting." },
-  { title: "Auto-Scaling & Self-Healing", desc: "Infrastructure that scales on demand and recovers automatically from failures." },
-  { title: "AI Model Deployment", desc: "Deploy trained AI/ML models to production with zero infrastructure knowledge." },
+  { title: "One-Click Deploy", desc: "Upload or import from GitHub and deploy instantly." },
+  { title: "Auto Stack Detection", desc: "Detects your tech stack and picks the optimal strategy." },
+  { title: "Multi-Cloud Support", desc: "Deploy to AWS, GCP, or Azure via secure OAuth." },
+  { title: "Real-Time Observability", desc: "Live logs, metrics, and intelligent alerting." },
+  { title: "Auto-Scaling", desc: "Scales on demand and self-heals from failures." },
+  { title: "AI Model Deployment", desc: "Deploy AI/ML models with zero infra knowledge." },
 ];
 
-const targetUsers = [
-  { label: "Students & Beginners", icon: "📚" },
-  { label: "Indie Developers", icon: "⚡" },
-  { label: "AI/ML Builders", icon: "🧠" },
-  { label: "Startups & Small Teams", icon: "🚀" },
+const steps = [
+  { step: "01", title: "Upload or Import", desc: "Upload files or connect GitHub." },
+  { step: "02", title: "Connect Cloud", desc: "Auth with AWS, GCP, or Azure." },
+  { step: "03", title: "Deploy", desc: "One click — everything handled." },
 ];
 
 const Product = () => {
@@ -68,250 +66,135 @@ const Product = () => {
     <PageTransition>
       <div className="min-h-screen">
         <Navbar />
-        <main>
-          {/* Hero */}
-          <section className="relative flex min-h-screen items-center overflow-hidden">
-            {/* Ambient glow */}
-            <div className="pointer-events-none absolute inset-0">
-              <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/[0.07] blur-[120px]" />
-              <div className="absolute right-0 bottom-0 h-[400px] w-[400px] rounded-full bg-primary/[0.04] blur-[100px]" />
-            </div>
-
-            <div className="container-narrow relative z-10 pt-32 pb-20">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex items-center gap-3"
-              >
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                  Coming Soon
-                </span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.15 }}
-                className="mt-8 text-5xl font-medium tracking-tight leading-[1.1] md:text-6xl lg:text-7xl"
-              >
-                Cloudsnap Studio
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
-              >
-                An AI-powered cloud deployment platform that eliminates infrastructure complexity.
-                Upload your project, connect your cloud, and deploy — with one click.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.45 }}
-                className="mt-4 text-base text-muted-foreground/60"
-              >
-                No DevOps expertise required. Production-grade from day one.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="mt-10"
-              >
-                {submitted ? (
-                  <div className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-6 py-3">
-                    <span className="text-sm font-medium text-foreground">🎉 You're on the list!</span>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setOpen(true)}
-                    className="btn-outline-premium border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                  >
-                    Join the Waitlist →
-                  </button>
-                )}
-              </motion.div>
-            </div>
-
-            {/* Scroll indicator */}
+        <main className="pt-32 pb-20">
+          <div className="container-narrow">
+            {/* Product Card */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 1 }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="relative w-full overflow-hidden rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm"
             >
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="h-8 w-px bg-gradient-to-b from-muted-foreground/50 to-transparent"
-              />
-            </motion.div>
-          </section>
-
-          {/* Problem */}
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow">
-              <div className="divider-subtle mb-20" />
-              <span className="text-sm uppercase tracking-widest text-muted-foreground">The Problem</span>
-              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                Cloud is powerful — but painful.
-              </h2>
-              <div className="mt-10 grid gap-6 md:grid-cols-2">
-                {[
-                  "Steep learning curve for AWS, Azure, and GCP",
-                  "Manual CI/CD pipeline configuration",
-                  "Confusion in choosing the right cloud",
-                  "Security misconfigurations and blind spots",
-                  "No built-in observability or alerting",
-                  "AI models built but never deployed",
-                ].map((problem, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    className="flex items-start gap-3 rounded-lg border border-border/50 bg-card/50 p-4"
-                  >
-                    <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-destructive/70" />
-                    <p className="text-sm text-muted-foreground">{problem}</p>
-                  </motion.div>
-                ))}
+              {/* Ambient glow inside card */}
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -top-20 left-1/2 -translate-x-1/2 h-[300px] w-[400px] rounded-full bg-primary/[0.06] blur-[100px]" />
+                <div className="absolute bottom-0 right-0 h-[200px] w-[200px] rounded-full bg-primary/[0.04] blur-[80px]" />
               </div>
-            </div>
-          </AnimatedSection>
 
-          {/* Features */}
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow">
-              <div className="divider-subtle mb-20" />
-              <span className="text-sm uppercase tracking-widest text-muted-foreground">Capabilities</span>
-              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                Everything you need to ship.
-              </h2>
-              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {features.map((feature, i) => (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    className="group rounded-xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/30 hover:bg-card"
-                  >
-                    <h3 className="text-base font-medium text-foreground">{feature.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{feature.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* How It Works */}
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow">
-              <div className="divider-subtle mb-20" />
-              <span className="text-sm uppercase tracking-widest text-muted-foreground">How It Works</span>
-              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                Three steps. Zero complexity.
-              </h2>
-              <div className="mt-12 grid gap-8 md:grid-cols-3">
-                {[
-                  { step: "01", title: "Upload or Import", desc: "Upload your project files or connect your GitHub repository." },
-                  { step: "02", title: "Connect Your Cloud", desc: "Authenticate with AWS, GCP, or Azure using secure OAuth." },
-                  { step: "03", title: "Deploy", desc: "One click. Auto stack detection, security, monitoring — all handled." },
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.step}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.12 }}
-                    className="relative"
-                  >
-                    <span className="text-5xl font-medium text-primary/15">{item.step}</span>
-                    <h3 className="mt-2 text-lg font-medium text-foreground">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Target Users */}
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow">
-              <div className="divider-subtle mb-20" />
-              <span className="text-sm uppercase tracking-widest text-muted-foreground">Built For</span>
-              <h2 className="mt-4 text-3xl font-medium tracking-tight md:text-4xl">
-                From students to startups.
-              </h2>
-              <div className="mt-12 flex flex-wrap gap-4">
-                {targetUsers.map((user, i) => (
-                  <motion.div
-                    key={user.label}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex items-center gap-3 rounded-full border border-border/50 bg-card/50 px-6 py-3"
-                  >
-                    <span className="text-lg">{user.icon}</span>
-                    <span className="text-sm font-medium text-foreground">{user.label}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {/* Vision */}
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow">
-              <div className="divider-subtle mb-20" />
-              <span className="text-sm uppercase tracking-widest text-muted-foreground">Vision</span>
-              <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight md:text-4xl">
-                An autonomous cloud operating system that abstracts complexity entirely.
-              </h2>
-              <p className="mt-6 max-w-2xl text-muted-foreground leading-relaxed">
-                Cloudsnap Studio isn't just a deployment tool. It's the beginning of a future where
-                anyone — regardless of their infrastructure knowledge — can take an idea to production
-                with confidence, security, and reliability built in from the start.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          {/* CTA */}
-          <AnimatedSection className="section-spacing">
-            <div className="container-narrow text-center">
-              <div className="divider-subtle mb-20" />
-              <h2 className="text-3xl font-medium tracking-tight md:text-4xl">
-                Be the first to deploy.
-              </h2>
-              <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-                Join the waitlist and get early access when Cloudsnap Studio launches.
-              </p>
-              <div className="mt-8">
-                {submitted ? (
-                  <div className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-6 py-3">
-                    <span className="text-sm font-medium text-foreground">🎉 You're on the list!</span>
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="border-b border-border/40 p-8 md:p-10">
+                  <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                    <div className="flex-1">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                        Coming Soon
+                      </span>
+                      <h1 className="text-3xl font-medium tracking-tight md:text-4xl lg:text-5xl">
+                        Cloudsnap Studio
+                      </h1>
+                      <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                        An AI-powered cloud deployment platform that eliminates infrastructure complexity.
+                        Upload your project, connect your cloud, and deploy — with one click.
+                      </p>
+                    </div>
+                    <div className="shrink-0">
+                      {submitted ? (
+                        <div className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-5 py-2.5">
+                          <span className="text-sm font-medium text-foreground">🎉 You're on the list!</span>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setOpen(true)}
+                          className="btn-outline-premium border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                        >
+                          Join the Waitlist →
+                        </button>
+                      )}
+                    </div>
                   </div>
-                ) : (
-                  <button
-                    onClick={() => setOpen(true)}
-                    className="btn-outline-premium border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                  >
-                    Join the Waitlist →
-                  </button>
-                )}
+                </div>
+
+                {/* Problem + How it works row */}
+                <div className="grid border-b border-border/40 md:grid-cols-2">
+                  {/* Problems */}
+                  <div className="border-b border-border/40 p-8 md:border-b-0 md:border-r md:p-10">
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground">The Problem</span>
+                    <h2 className="mt-2 text-lg font-medium tracking-tight md:text-xl">
+                      Cloud is powerful — but painful.
+                    </h2>
+                    <div className="mt-5 space-y-2.5">
+                      {[
+                        "Steep learning curve for AWS, Azure, GCP",
+                        "Manual CI/CD pipeline configuration",
+                        "Security misconfigurations & blind spots",
+                        "AI models built but never deployed",
+                      ].map((problem, i) => (
+                        <div key={i} className="flex items-start gap-2.5">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-destructive/70" />
+                          <p className="text-sm text-muted-foreground">{problem}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* How it works */}
+                  <div className="p-8 md:p-10">
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground">How It Works</span>
+                    <h2 className="mt-2 text-lg font-medium tracking-tight md:text-xl">
+                      Three steps. Zero complexity.
+                    </h2>
+                    <div className="mt-5 space-y-4">
+                      {steps.map((item) => (
+                        <div key={item.step} className="flex items-start gap-4">
+                          <span className="text-2xl font-medium text-primary/20 leading-none">{item.step}</span>
+                          <div>
+                            <h3 className="text-sm font-medium text-foreground">{item.title}</h3>
+                            <p className="text-sm text-muted-foreground">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Features grid */}
+                <div className="p-8 md:p-10">
+                  <span className="text-xs uppercase tracking-widest text-muted-foreground">Capabilities</span>
+                  <h2 className="mt-2 text-lg font-medium tracking-tight md:text-xl">
+                    Everything you need to ship.
+                  </h2>
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {features.map((feature, i) => (
+                      <motion.div
+                        key={feature.title}
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.06 }}
+                        className="rounded-xl border border-border/40 bg-background/50 p-5 transition-colors hover:border-primary/30 hover:bg-background/80"
+                      >
+                        <h3 className="text-sm font-medium text-foreground">{feature.title}</h3>
+                        <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{feature.desc}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Footer bar */}
+                <div className="flex items-center justify-between border-t border-border/40 bg-muted/30 px-8 py-5 md:px-10">
+                  <div className="flex flex-wrap gap-3">
+                    {["📚 Students", "⚡ Indie Devs", "🧠 AI Builders", "🚀 Startups"].map((label) => (
+                      <span key={label} className="text-xs text-muted-foreground">{label}</span>
+                    ))}
+                  </div>
+                  <p className="hidden text-xs text-muted-foreground/60 md:block">
+                    No DevOps expertise required.
+                  </p>
+                </div>
               </div>
-            </div>
-          </AnimatedSection>
+            </motion.div>
+          </div>
         </main>
         <Footer />
 
